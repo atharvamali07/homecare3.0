@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeFix - Home Services Made Simple</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-body: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #16a34a;
+            --radius-lg: 16px;
+            --radius-md: 8px;
+            --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 24px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .user-status {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 520px;
+            padding: 48px;
+            transition: all 0.3s ease;
+        }
+
+        .card h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .hidden { display: none !important; }
+
+        .btn {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            margin-top: 12px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-success { background: var(--success); color: white; }
+
+        .role-option {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .role-option:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+
+        .role-option h3 { font-size: 18px; margin-bottom: 6px; }
+        .role-option p { color: var(--text-muted); font-size: 14px; }
+
+        .form-group {
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            outline: none;
+            background: var(--bg-body);
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+        }
+
+        .location-box {
+            background: #eff6ff;
+            border: 1px dashed var(--primary);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .job-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 16px;
+            background: #fafafa;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-logo">HomeFix</div>
+        <div class="user-status" id="userStatus">Not Logged In</div>
+    </header>
+
+    <main>
+        <!-- STEP 1: ROLE SELECTION -->
+        <div id="roleScreen" class="card">
+            <h2>Welcome to HomeFix</h2>
+            <p class="subtitle">Please select your role to continue</p>
+
+            <div class="role-option" onclick="selectRole('customer')">
+                <h3>👤 Customer</h3>
+                <p>Book skilled workers for home services</p>
+            </div>
+
+            <div class="role-option" onclick="selectRole('worker')">
+                <h3>🛠️ Worker</h3>
+                <p>Find work based on your profession</p>
+            </div>
+        </div>
+
+        <!-- STEP 2: EMAIL & OTP LOGIN -->
+        <div id="loginScreen" class="card hidden">
+            <h2 id="loginTitle">Email OTP Sign In</h2>
+            <p class="subtitle">Enter your email to receive a verification OTP</p>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="emailInput" placeholder="example@gmail.com">
+            </div>
+
+            <button class="btn btn-primary" id="sendOtpBtn" onclick="sendOTP()">Send OTP</button>
+
+            <!-- OTP Input Section -->
+            <div id="otpSection" class="hidden" style="margin-top: 24px;">
+                <div class="form-group">
+                    <label>Enter 6-Digit OTP</label>
+                    <input type="text" id="otpInput" maxlength="6" placeholder="Enter OTP">
+                </div>
+                <button class="btn btn-success" onclick="verifyOTP()">Verify OTP & Login</button>
+            </div>
+        </div>
+
+        <!-- STEP 2B: WORKER PROFESSION SETUP -->
+        <div id="workerProfScreen" class="card hidden">
+            <h2>Select Your Profession</h2>
+            <p class="subtitle">You will only receive jobs matching your category</p>
+
+            <div class="form-group">
+                <label>Profession</label>
+                <select id="workerProfSelect" onchange="toggleCustomProfInput(this.value, 'workerProfCustomGroup')">
+                    <option value="Plumber">Plumber</option>
+                    <option value="Electrician">Electrician</option>
+                    <option value="Carpenter">Carpenter</option>
+                    <option value="Painter">Painter</option>
+                    <option value="Appliance Repair">Appliance Repair</option>
+                    <option value="Other">Other (Type manually)</option>
+                </select>
+            </div>
+
+            <div class="form-group hidden" id="workerProfCustomGroup">
+                <label>Type Your Profession</label>
+                <input type="text" id="workerProfCustom" placeholder="e.g. Welder, Mason">
+            </div>
+
+            <button class="btn btn-primary" onclick="saveWorkerProfession()">Save Profile</button>
+        </div>
+
+        <!-- STEP 3A: CUSTOMER DASHBOARD -->
+        <div id="customerDashboard" class="card hidden" style="max-width: 600px;">
+            <h2>Post a Job</h2>
+            <p class="subtitle">Select the service you need</p>
+
+            <!-- Location Picker -->
+            <div class="location-box">
+                <button class="btn btn-secondary" onclick="getPreciseGPSLocation()">📍 Enable Device Location (Accurate GPS)</button>
+                <p id="gpsStatusText" style="font-size: 13px; color: var(--primary); margin-top: 8px; font-weight: 500;"></p>
+
+                <div style="margin: 16px 0 8px 0; font-size: 12px; color: var(--text-muted);">Or Select Manual Location:</div>
+                <input type="text" id="manualLocationInput" placeholder="e.g. Karve Nagar, Pune" style="padding: 10px; border-radius: 6px; border: 1px solid var(--border); width: 100%;">
+            </div>
+
+            <!-- Service Picker -->
+            <div class="form-group">
+                <label>Required Service</label>
+                <select id="custServiceSelect" onchange="toggleCustomProfInput(this.value, 'custCustomServiceGroup')">
+                    <option value="Plumber">Plumber</option>
+                    <option value="Electrician">Electrician</option>
+                    <option value="Carpenter">Carpenter</option>
+                    <option value="Painter">Painter</option>
+                    <option value="Other">Other (Type manually)</option>
+                </select>
+            </div>
+
+            <div class="form-group hidden" id="custCustomServiceGroup">
+                <label>Type Service Name</label>
+                <input type="text" id="custCustomService" placeholder="e.g. Water Tank Cleaning">
+            </div>
+
+            <div class="form-group">
+                <label>Job Description</label>
+                <textarea id="jobDesc" rows="3" placeholder="e.g. Leaking washbasin pipe..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Upload Work Photo (Optional)</label>
+                <input type="file" id="jobPhoto" accept="image/*">
+            </div>
+
+            <button class="btn btn-primary" onclick="submitCustomerJob()">Post Request</button>
+        </div>
+
+        <!-- STEP 3B: WORKER DASHBOARD -->
+        <div id="workerDashboard" class="card hidden" style="max-width: 600px;">
+            <h2>Available Orders</h2>
+            <p class="subtitle">Your Profession: <strong id="currentWorkerProf" style="color: var(--primary);"></strong></p>
+
+            <div id="workerJobList">
+                <!-- Filtered Jobs will render here -->
+            </div>
+        </div>
+
+        <!-- WORK TRACKING & WORK DONE -->
+        <div id="workTrackingScreen" class="card hidden" style="max-width: 600px;">
+            <h2>Work In Progress</h2>
+            <p class="subtitle">Live location mapping enabled for Customer & Worker</p>
+
+            <div style="background: #e2e8f0; height: 180px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-weight: 500; color: #475569;">
+                🗺️ [Accurate Live Map Navigation Interface]
+            </div>
+
+            <div id="workDoneSection" class="hidden">
+                <hr style="margin-bottom: 24px; border: 0; border-top: 1px solid var(--border);">
+                <div class="form-group">
+                    <label>Upload Completed Work Photo (Optional)</label>
+                    <input type="file" id="workDonePhoto" accept="image/*">
+                </div>
+                <button class="btn btn-success" onclick="markWorkAsCompleted()">Work Is Done</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let currentRole = '';
+        let userEmail = '';
+        let workerProfession = '';
+        let currentJob = null;
+
+        function selectRole(role) {
+            currentRole = role;
+            document.getElementById('roleScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('loginTitle').innerText = (role === 'customer' ? 'Customer' : 'Worker') + ' Email OTP Login';
+        }
+
+        function sendOTP() {
+            userEmail = document.getElementById('emailInput').value;
+            if(!userEmail || !userEmail.includes('@')) {
+                alert('Please enter a valid email address!');
+                return;
+            }
+            
+            alert('A 6-digit OTP has been sent to ' + userEmail);
+            document.getElementById('otpSection').classList.remove('hidden');
+            document.getElementById('sendOtpBtn').classList.add('hidden');
+        }
+
+        function verifyOTP() {
+            let otp = document.getElementById('otpInput').value;
+            if(otp.length !== 6) {
+                alert('Please enter the full 6-digit OTP!');
+                return;
+            }
+
+            document.getElementById('userStatus').innerText = userEmail + ' (' + currentRole.toUpperCase() + ')';
+            document.getElementById('loginScreen').classList.add('hidden');
+
+            if(currentRole === 'worker') {
+                document.getElementById('workerProfScreen').classList.remove('hidden');
+            } else {
+                document.getElementById('customerDashboard').classList.remove('hidden');
+            }
+        }
+
+        function toggleCustomProfInput(val, targetGroupId) {
+            let group = document.getElementById(targetGroupId);
+            if(val === 'Other') {
+                group.classList.remove('hidden');
+            } else {
+                group.classList.add('hidden');
+            }
+        }
+
+        function saveWorkerProfession() {
+            let selected = document.getElementById('workerProfSelect').value;
+            if(selected === 'Other') {
+                workerProfession = document.getElementById('workerProfCustom').value;
+            } else {
+                workerProfession = selected;
+            }
+
+            if(!workerProfession) { alert('Please enter your profession'); return; }
+
+            document.getElementById('workerProfScreen').classList.add('hidden');
+            document.getElementById('workerDashboard').classList.remove('hidden');
+            document.getElementById('currentWorkerProf').innerText = workerProfession;
+            
+            renderWorkerJobs();
+        }
+
+        function getPreciseGPSLocation() {
+            let status = document.getElementById('gpsStatusText');
+            if (navigator.geolocation) {
+                status.innerText = "Fetching precise GPS location...";
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    status.innerText = `Precise Location: Lat ${pos.coords.latitude.toFixed(4)}, Long ${pos.coords.longitude.toFixed(4)}`;
+                }, () => {
+                    status.innerText = "GPS access denied. Please use manual location.";
+                }, { enableHighAccuracy: true });
+            } else {
+                status.innerText = "Browser does not support Geolocation.";
+            }
+        }
+
+        function submitCustomerJob() {
+            let service = document.getElementById('custServiceSelect').value;
+            if(service === 'Other') {
+                service = document.getElementById('custCustomService').value;
+            }
+            let desc = document.getElementById('jobDesc').value;
+
+            if(!desc) { alert('Please describe the work!'); return; }
+
+            currentJob = { service, desc, customerEmail: userEmail };
+            alert('Your job request has been posted successfully!');
+            
+            document.getElementById('customerDashboard').classList.add('hidden');
+            document.getElementById('workTrackingScreen').classList.remove('hidden');
+        }
+
+        function renderWorkerJobs() {
+            let container = document.getElementById('workerJobList');
+            container.innerHTML = `
+                <div class="job-card">
+                    <h4>Service: ${workerProfession}</h4>
+                    <p style="font-size: 14px; color: var(--text-muted); margin: 6px 0;"><strong>Description:</strong> Urgent ${workerProfession} job required.</p>
+                    <p style="font-size: 13px; color: var(--primary);">📍 Kothrud, Pune (1.8 km away)</p>
+                    <button class="btn btn-primary" onclick="acceptJob()">Accept Order</button>
+                </div>
+            `;
+        }
+
+        function acceptJob() {
+            document.getElementById('workerDashboard').classList.add('hidden');
+            document.getElementById('workTrackingScreen').classList.remove('hidden');
+            document.getElementById('workDoneSection').classList.remove('hidden');
+        }
+
+        function markWorkAsCompleted() {
+            alert('Work completed! Portfolio updated.');
+            location.reload();
+        }
+    </script>
+</body>
+</html>
